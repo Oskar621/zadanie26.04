@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CosTamAktywnosc</string>
+    <string name="mecze_pilkarskie">mecze pilkarskie</string>
+    <string name="mecze_tenisowe">mecze tenisowe</string>
+    <string name="zawody_zuzlowe">zawody zuzlowe</string>
+    <string name="szukaj">Szukaj</string>
+</resources>
