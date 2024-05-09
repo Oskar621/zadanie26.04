@@ -27,21 +27,21 @@
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/checkBox1"
+                android:id="@+id/pilka"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/mecze_pilkarskie" />
 
             <CheckBox
-                android:id="@+id/checkBox2"
+                android:id="@+id/tenis"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/mecze_tenisowe" />
 
             <CheckBox
-                android:id="@+id/checkBox3"
+                android:id="@+id/zuzel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

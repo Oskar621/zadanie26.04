@@ -7,18 +7,15 @@ import android.widget.CheckBox
 import android.widget.ListView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-val start: Int = 0
-val end: Int = 20
+const val start: Int = 0
+const val end: Int = 20
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        val puby0 = "Brak Barów w twojej odległości"
         val pub5pilka = arrayOf("pub superBowl - mecze piłkarskie","pub JackRussel - mecze piłkarskie")
         val pub5tenis = arrayOf("pub SuperRakieta - mecze tenisa")
         val pub10pilka = arrayOf("Pub superBowl - mecze piłkarskie", "pub JackRussel - mecze piłkarskie", "pub footballGame - mecze piłkarskie")
@@ -34,12 +31,14 @@ class MainActivity : AppCompatActivity() {
         val seekBar = findViewById<SeekBar>(R.id.ileKm)
         seekBar.max = end/5
         seekBar.min = start
-        val adapterListView1 = ArrayAdapter(this, android.R.layout.simple_list_item_1, puby0)
-        val listViewToUpdate = findViewById<ListView>(R.id.listView)
+
+        val wynikList = ArrayList<String>() // Lista na wyniki
+        val adapterListView1 = ArrayAdapter(this, android.R.layout.simple_list_item_1, wynikList)
+        val listViewToUpdate = findViewById<ListView>(R.id.listaPubow)
         listViewToUpdate.adapter = adapterListView1
         seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                Toast.makeText(applicationContext, (seekBar.progress*5).toString(), Toast.LENGTH_SHORT).show()
+
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -53,47 +52,56 @@ class MainActivity : AppCompatActivity() {
         val btnSzukaj = findViewById<Button>(R.id.szukajButton)
 
         btnSzukaj.setOnClickListener {
-            var wynik = ""
-            val pilka = findViewById<CheckBox>(R.id.checkBox1)
-            val tenis = findViewById<CheckBox>(R.id.checkBox2)
-            val zuzel = findViewById<CheckBox>(R.id.checkBox3)
-            if (seekBar.progress == 0)
-                wynik = puby0
+            val wynik = StringBuilder()
+            val pilka = findViewById<CheckBox>(R.id.pilka)
+            val tenis = findViewById<CheckBox>(R.id.tenis)
+            val zuzel = findViewById<CheckBox>(R.id.zuzel)
+            wynikList.clear()
 
-            else if(seekBar.progress == 5){
-                if (pilka.isChecked)
-                    wynik+= pub5pilka
-                if (tenis.isChecked)
-                    wynik+= pub5tenis
-            }
-            else if(seekBar.progress == 10){
-                if (pilka.isChecked)
-                    wynik+= pub10pilka
-                if (tenis.isChecked)
-                    wynik+= pub10tenis
-                if (zuzel.isChecked)
-                    wynik+= pub10zuzel
-            }
-            else if(seekBar.progress == 15) {
-                if (pilka.isChecked)
-                    wynik += pub15pilka
-                if (tenis.isChecked)
-                    wynik += pub15tenis
-                if (zuzel.isChecked)
-                    wynik += pub15zuzel
-                if (pilka.isChecked && tenis.isChecked && zuzel.isChecked)
-                    wynik += "pub ekstraGame - mecze piłkarskie, mecze tenisa, zawody żużlowe"
-            }
-            else if(seekBar.progress == 20){
-                if (pilka.isChecked)
-                    wynik+= pub20pilka
-                if (tenis.isChecked)
-                    wynik+= pub20tenis
-                if (zuzel.isChecked)
-                    wynik+= pub20zuzel
-                if (pilka.isChecked && tenis.isChecked && zuzel.isChecked)
-                    wynik += "pub ekstraGame - mecze piłkarskie, mecze tenisa, zawody żużlowe"
+            if (seekBar.progress == 0) {
+                wynik.append("Brak Barów w twojej odległości")
+            } else {
+                when (seekBar.progress) {
+                    1 -> {
+                        if (pilka.isChecked)
+                            wynikList.addAll(pub5pilka)
+                        if (tenis.isChecked)
+                            wynikList.addAll(pub5tenis)
+                    }
+                    2 -> {
+                        if (pilka.isChecked)
+                            wynikList.addAll(pub10pilka)
+                        if (tenis.isChecked)
+                            wynikList.addAll(pub10tenis)
+                        if (zuzel.isChecked)
+                            wynikList.addAll(pub10zuzel)
+                    }
+                    3 -> {
+                        if (pilka.isChecked)
+                            wynikList.addAll(pub15pilka)
+                        if (tenis.isChecked)
+                            wynikList.addAll(pub15tenis)
+                        if (zuzel.isChecked)
+                            wynikList.addAll(pub15zuzel)
+                        if (pilka.isChecked && tenis.isChecked && zuzel.isChecked)
+                            wynik.append("pub ekstraGame - mecze piłkarskie, mecze tenisa, zawody żużlowe")
+                    }
+                    4 -> {
+                        if (pilka.isChecked)
+                            wynikList.addAll(pub20pilka)
+                        if (tenis.isChecked)
+                            wynikList.addAll(pub20tenis)
+                        if (zuzel.isChecked)
+                            wynikList.addAll(pub20zuzel)
+                        if (pilka.isChecked && tenis.isChecked && zuzel.isChecked)
+                            wynik.append("pub ekstraGame - mecze piłkarskie, mecze tenisa, zawody żużlowe")
+                    }
                 }
+            }
+
+            wynikList.add(wynik.toString())
+            // Powiadom adapter o zmianie danych
+            adapterListView1.notifyDataSetChanged()
         }
 
     }
